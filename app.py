@@ -7,8 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/16TYUCaAq25wMFIfWQBkPBwjtxZi2-CuZ
 """
 
-!pip install streamlit pyngrok nltk
-
 import streamlit as st
 import pickle
 import re
@@ -16,20 +14,11 @@ import string
 import nltk
 from nltk.corpus import stopwords
 
-from google.colab import files
-
-print("model.pkl")
-files.upload()
-
-print("vectorizer.pkl")
-files.upload()
-
-print("encoder.pkl")
-files.upload()
-
+# تحميل stopwords
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
+# تحميل الملفات المحفوظة
 with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
@@ -39,6 +28,7 @@ with open("vectorizer.pkl", "rb") as f:
 with open("encoder.pkl", "rb") as f:
     encoder = pickle.load(f)
 
+# تنظيف النصوص
 def clean_text(text):
     text = text.lower()
     text = re.sub(r"http\S+|www\S+|https\S+", '', text)
@@ -50,6 +40,7 @@ def clean_text(text):
     text = ' '.join([word for word in text.split() if word not in stop_words])
     return text
 
+# التنبؤ بالمشاعر
 def predict_sentiment(text):
     cleaned = clean_text(text)
     vec = vectorizer.transform([cleaned])
@@ -57,52 +48,40 @@ def predict_sentiment(text):
     label = encoder.inverse_transform(pred)
     return label[0]
 
+# 🎨 CSS مخصص
 custom_css = """
 <style>
-body {
-    background: linear-gradient(to bottom, #ffb6c1, #000000);
-    color: #fff;
-}
-
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #ffb6c1 10%, #000000 90%);
     animation: gradientMove 12s ease infinite;
     background-size: 400% 400%;
 }
-
 @keyframes gradientMove {
     0% {background-position: 0% 50%;}
     50% {background-position: 100% 50%;}
     100% {background-position: 0% 50%;}
 }
-
 h1, .stTextInput label, .stTextArea label, .stButton button {
     color: #fff;
     font-family: 'Segoe UI', sans-serif;
-    font-size: 28px;
 }
-
 .stTextArea textarea {
     height: 300px !important;
-    font-size: 24px !important;
-    font-family: 'Segoe UI', sans-serif !important;
+    font-size: 20px !important;
     color: #fff !important;
     background-color: #111 !important;
     border: 3px solid #ff69b4 !important;
     border-radius: 20px !important;
     padding: 20px !important;
 }
-
 .stButton button {
     border: 2px solid #ff69b4;
     background-color: #222;
     color: #fff;
     border-radius: 20px;
-    font-size: 22px;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 12px 30px;
+    font-size: 18px;
+    padding: 10px 20px;
 }
-
 .stButton button:hover {
     background-color: #ff69b4;
     color: #000;
@@ -111,12 +90,13 @@ h1, .stTextInput label, .stTextArea label, .stButton button {
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
+# واجهة التطبيق
 st.title("💬 Sentiment Analyzer")
-st.subheader("✨ Write a comment below and let's see how it feels!")
+st.subheader("✨ Write a comment and I'll tell you if it's positive or negative!")
 
 user_input = st.text_area("📝 Your Comment:")
 
-if st.button(" Analyze Sentiment"):
+if st.button("Analyze Sentiment"):
     if user_input.strip() == "":
         st.warning("⚠️ Please write something first.")
     else:
