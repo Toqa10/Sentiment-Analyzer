@@ -52,9 +52,9 @@ def predict_sentiment(text):
 custom_css = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #ffb6c1 10%, #000000 90%);
-    animation: gradientMove 12s ease infinite;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
 }
 @keyframes gradientMove {
     0% {background-position: 0% 50%;}
@@ -69,25 +69,27 @@ h1, .stTextInput label, .stTextArea label, .stButton button {
     height: 300px !important;
     font-size: 20px !important;
     color: #fff !important;
-    background-color: #111 !important;
-    border: 3px solid #ff69b4 !important;
-    border-radius: 20px !important;
+    background-color: rgba(17,17,17,0.85) !important;
+    border: 2px solid #4facfe !important;
+    border-radius: 15px !important;
     padding: 20px !important;
 }
 .stButton button {
-    border: 2px solid #ff69b4;
-    background-color: #222;
+    border: 2px solid #4facfe;
+    background-color: transparent;
     color: #fff;
-    border-radius: 20px;
+    border-radius: 15px;
     font-size: 18px;
     padding: 10px 20px;
+    transition: all 0.3s ease;
 }
 .stButton button:hover {
-    background-color: #ff69b4;
+    background-color: #4facfe;
     color: #000;
 }
 </style>
 """
+
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # واجهة التطبيق
